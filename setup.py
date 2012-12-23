@@ -7,7 +7,7 @@ with file('apt') as f:
     for line in f:
         if line.startswith('__version__'):
             try:
-                version = line.split()[2]
+                version = line.split()[2].replace("'", '')
             except IndexError:
                 pass
             break
