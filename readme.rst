@@ -1,5 +1,5 @@
 
-APT - Command-line Wrapper
+APT, a Command-line Wrapper
 ============================
 
 A simpler, shorter, and slightly-saner interface to the Debian APT command-line
@@ -12,7 +12,13 @@ Hopefully this micro-project will make your life a tiny bit easier.
 Installation
 --------------
 
+::
+
     sudo pip install apt-wrapper
+
+or for a possibly more up-to date version::
+
+    sudo pip install https://bitbucket.org/mixmastamyk/apt/get/default.tar.gz
 
 
 Usage
@@ -26,7 +32,6 @@ Usage
     Password:
 
     apt remove foo
-    ...
 
 etc.
 
