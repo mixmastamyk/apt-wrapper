@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils 0.9.1: http://docutils.sourceforge.net/" />
-<title>APT - Command-line Wrapper</title>
+<title>APT, a Command-line Wrapper</title>
 <style type="text/css">
 
 /*
@@ -322,18 +322,23 @@ ul.auto-toc {
 </style>
 </head>
 <body>
-<div class="document" id="apt-command-line-wrapper">
-<h1 class="title">APT - Command-line Wrapper</h1>
+<div class="document" id="apt-a-command-line-wrapper">
+<h1 class="title">APT, a Command-line Wrapper</h1>
 
-<p>A simpler, shorter, and slightly saner interface to the Debian APT command-line
+<p>A simpler, shorter, and slightly-saner interface to the Debian APT command-line
 tools.
 apt is a single command that will automatically elevate itself with sudo if
 need-be.
 Hopefully this micro-project will make your life a tiny bit easier.</p>
 <div class="section" id="installation">
 <h1>Installation</h1>
-<blockquote>
-sudo pip install apt-wrapper</blockquote>
+<pre class="literal-block">
+sudo pip install apt-wrapper
+</pre>
+<p>or for a possibly more up-to date version:</p>
+<pre class="literal-block">
+sudo pip install https://bitbucket.org/mixmastamyk/apt/get/default.tar.gz
+</pre>
 </div>
 <div class="section" id="usage">
 <h1>Usage</h1>
@@ -344,7 +349,6 @@ apt install foo bar
 Password:
 
 apt remove foo
-...
 </pre>
 <p>etc.</p>
 </div>
