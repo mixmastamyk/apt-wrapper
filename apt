@@ -1,0 +1,82 @@
+#!/usr/bin/env python
+'''A simpler interface to Debian APT commands. (C) 2012, Mike Miller'''
+import sys, os
+from subprocess import call
+
+__version__ = '0.90'
+debug = False
+cmdmap = {  # map commands to their appropriate binaries
+    # apt-get
+    'autoclean': 'apt-get',
+    'autoremove': 'apt-get',
+    'build-dep': 'apt-get',
+    'changelog': 'apt-get',
+    'check': 'apt-get',
+    'clean': 'apt-get',
+    'dist-upgrade': 'apt-get',
+    'download': 'apt-get',
+    'dselect-upgrade': 'apt-get',
+    'install': 'apt-get',
+    'markauto': 'apt-get',
+    'purge': 'apt-get',
+    'remove': 'apt-get',
+    'source': 'apt-get',
+    'unmarkauto': 'apt-get',
+    'update': 'apt-get',
+    'upgrade': 'apt-get',
+
+    # cache
+    'depends': 'apt-cache',
+    'dotty': 'apt-cache',
+    'dump': 'apt-cache',
+    'dumpavail': 'apt-cache',
+    'gencaches': 'apt-cache',
+    'pkgnames': 'apt-cache',
+    'policy': 'apt-cache',
+    'rdepends': 'apt-cache',
+    'search': 'apt-cache',
+    'show': 'apt-cache',
+    'showauto': 'apt-cache',
+    'showpkg': 'apt-cache',
+    'showsrc': 'apt-cache',
+    'stats': 'apt-cache',
+    'unmet': 'apt-cache',
+    'xvcg': 'apt-cache',
+
+    # config
+    'shell': 'apt-config',
+    'dumpcon': 'apt-config',
+}
+
+# prepare & check args
+args = sys.argv[1:]
+if args:
+    command = args[0]
+else:
+    sys.exit('Error: no command given.\n  Must be one of (%s).' %
+             ', '.join(cmdmap.keys()))
+
+if command in cmdmap:
+    binary = cmdmap[command]
+else:
+    sys.exit('Error: unknown command: ' + command)
+
+# check for root permissions, don't elevate for cache operations
+if os.geteuid() == 0 or binary == 'apt-cache':
+    prefix = ''
+else:
+    prefix = 'sudo '
+
+# enable debug text
+if '-d' in args:
+    args.remove('-d')
+    debug = True
+
+
+# build command line
+cmdline = prefix + ' '.join([binary] + args)
+if debug:
+    print 'Running:', cmdline
+
+# http://youtu.be/0hiUuL5uTKc?t=8s
+sys.exit(call(cmdline, shell=True))
