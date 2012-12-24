@@ -34,9 +34,16 @@ Usage
     apt remove foo
 
 etc.
+It can also handle shortened commands, as long as they are unique::
+
+    apt cl
+
+results in::
+
+    sudo apt-get clean
 
 
 License
 ~~~~~~~~~
 
-Licensed under the GPL version 3+.
+Licensed under the GPL, version 3+.
