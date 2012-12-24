@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-'''A simpler interface to Debian APT commands. (C) 2012, Mike Miller'''
+''' A simpler interface to Debian APT commands, GPLv3+ licensed.
+    (C) 2012, Mike Miller
+'''
 import sys, os
 from subprocess import call
 

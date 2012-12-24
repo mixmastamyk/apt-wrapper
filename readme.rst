@@ -35,3 +35,8 @@ Usage
 
 etc.
 
+
+License
+~~~~~~~~~
+
+Licensed under the GPL version 3+.
