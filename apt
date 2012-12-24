@@ -5,9 +5,10 @@
 import sys, os
 from subprocess import call
 
-__version__ = '0.90'
+__version__ = '0.92'
 debug = False
-cmdmap = {  # map commands to their appropriate binaries
+# map commands to their appropriate binaries:
+cmdmap = {
     # apt-get
     'autoclean': 'apt-get',
     'autoremove': 'apt-get',
@@ -48,7 +49,28 @@ cmdmap = {  # map commands to their appropriate binaries
     # config
     'shell': 'apt-config',
     'dumpcon': 'apt-config',
+
+    # aptitude
+    'hold': 'aptitude',
+    'unhold': 'aptitude',
+    'download': 'aptitude',
+    'reinstall': 'aptitude',
+    'changelog': 'aptitude',
+    'why': 'aptitude',
+    'why-not': 'aptitude',
+
+    'fingerprint': 'apt-key',
 }
+commands = sorted(set(cmdmap.keys()))
+
+def is_uniq(fragment):
+    ''' Check whether a given command fragment uniquely identifies a command.
+        Returns:  a tuple with
+    '''
+    results = [ c  for c in commands  if c.startswith(fragment) ]
+    uniq = (len(results) == 1)
+    return (uniq, (results or [None])[0])  # bool, first result
+
 
 # prepare & check args
 args = sys.argv[1:]
@@ -56,12 +78,23 @@ if args:
     command = args[0]
 else:
     sys.exit('Error: no command given.\n  Must be one of (%s).' %
-             ', '.join(cmdmap.keys()))
+             ', '.join(commands))
 
+# enable debug text
+if '-d' in args:
+    args.remove('-d')
+    debug = True
+
+# check command
 if command in cmdmap:
     binary = cmdmap[command]
 else:
-    sys.exit('Error: unknown command: ' + command)
+    uniq, command = is_uniq(command)
+    if debug:
+        print 'Unique:', uniq, command
+    if not uniq:
+        sys.exit('Error: unknown or ambiguous command, "%s"' % args[0])
+    binary = cmdmap[command]
 
 # check for root permissions, don't elevate for cache operations
 if os.geteuid() == 0 or binary == 'apt-cache':
@@ -69,14 +102,9 @@ if os.geteuid() == 0 or binary == 'apt-cache':
 else:
     prefix = 'sudo '
 
-# enable debug text
-if '-d' in args:
-    args.remove('-d')
-    debug = True
-
 
 # build command line
-cmdline = prefix + ' '.join([binary] + args)
+cmdline = prefix + ' '.join([binary, command] + args[1:])
 if debug:
     print 'Running:', cmdline
 
