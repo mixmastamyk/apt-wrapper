@@ -55,9 +55,7 @@ cmd_map = {
     # aptitude
     'hold': 'aptitude',
     'unhold': 'aptitude',
-    'download': 'aptitude',
     'reinstall': 'aptitude',
-    'changelog': 'aptitude',
     'why': 'aptitude',
     'why-not': 'aptitude',
 
@@ -106,7 +104,7 @@ else:
                  args[0], matches))
     binary = cmd_map[command]
 
-# check for root permissions, don't elevate for cache operations
+# should this be elevated?
 if binary in use_sudo and os.geteuid() != 0:
     prefix = 'sudo '
 else:
