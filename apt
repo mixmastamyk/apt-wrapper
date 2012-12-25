@@ -7,7 +7,7 @@ from subprocess import call
 
 __version__ = '0.93'
 debug = False
-use_sudo = ('apt-get', 'aptitude', 'apt-key')
+use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key', 'dpkg -i')
 # map commands to their appropriate binaries:
 cmd_map = {
     # apt-get
@@ -67,6 +67,7 @@ cmd_map = {
     'query': 'dpkg-query -l',       # alias
     'listfiles': 'dpkg-query -L',
     'searchfiles': 'dpkg-query -S',
+    'instdeb': 'dpkg -i',
 }
 commands = sorted(set(cmd_map.keys()))  # make a list for the user
 
@@ -100,19 +101,20 @@ else:
     if debug:
         print 'Unique:', args[0], command
     if not uniq:
-        sys.exit('Error: unknown or ambiguous command, %s --> %s' % (
+        sys.exit('Error: %s command, %s --> %s' % (
+                 ('ambiguous' if matches else 'unknown'),
                  args[0], matches))
     binary = cmd_map[command]
+
+# check for root permissions, don't elevate for cache operations
+if binary in use_sudo and os.geteuid() != 0:
+    prefix = 'sudo '
+else:
+    prefix = ''
 
 # check if binary uses a flag instead of command
 if ' ' in binary:
     binary, command = binary.split(' ', 1)
-
-# check for root permissions, don't elevate for cache operations
-if binary.split()[0] in use_sudo and os.geteuid() != 0:
-    prefix = 'sudo '
-else:
-    prefix = ''
 
 
 # build command line
