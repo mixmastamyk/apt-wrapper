@@ -5,8 +5,10 @@ APT, a Command-line Wrapper
 A shorter, simpler, and slightly-saner interface to the Debian APT command-line
 tools.
 apt is a single command that will automatically elevate itself with sudo if
-need-be.  It consolidates all commands from apt-get and apt-cache, and a few
-from aptitude and apt-key, etc.
+need-be.
+It consolidates all commands from apt-get and apt-cache, and a few from
+aptitude and apt-key, etc.
+It has a much narrower focus than wajig.
 
 Hopefully this micro-project will make your life a tiny bit easier.
 
