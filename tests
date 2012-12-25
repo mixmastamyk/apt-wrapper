@@ -1,0 +1,24 @@
+#!/bin/bash -v
+
+pyflakes *.py apt
+sudo python setup.py install
+
+
+apt search gnome-about -d
+
+apt policy gnome-about -d
+
+apt install foo bar -d
+
+apt rm foo -d
+
+apt cl -d
+
+apt status less -d
+
+#~ apt fingerprint -d
+
+apt searchfiles /bin/less -d
+
+apt instdeb dude.deb -d
+
