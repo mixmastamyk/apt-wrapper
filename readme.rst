@@ -7,7 +7,7 @@ tools.
 apt is a single command that will automatically elevate itself with sudo if
 need-be.
 It consolidates all commands from apt-get and apt-cache, and a few from
-aptitude and apt-key, etc.
+aptitude, dpkg-query, and apt-key, etc.
 It has a much narrower focus than wajig.
 
 Hopefully this micro-project will make your life a tiny bit easier.
@@ -35,10 +35,11 @@ Usage
     apt install foo bar
     Password:
 
-    apt remove foo
+    apt rm foo  # alias
 
 etc.
-It can also handle shortened commands, as long as they are unique::
+Apt can also handle shortened commands.  Add letters to the command until it
+is uniquely identified::
 
     apt cl
 
