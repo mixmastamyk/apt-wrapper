@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-''' A simpler interface to Debian APT commands, GPLv3+ licensed.
-    (C) 2012, Mike Miller
+''' A simpler interface to Debian APT commands. (C) 2012, Mike Miller
+    License: GPLv3+
 '''
 import sys, os
 from subprocess import call
@@ -65,11 +65,11 @@ commands = sorted(set(cmdmap.keys()))
 
 def is_uniq(fragment):
     ''' Check whether a given command fragment uniquely identifies a command.
-        Returns:  a tuple with
+        Returns:  a tuple with boolean, first command.
     '''
     results = [ c  for c in commands  if c.startswith(fragment) ]
     uniq = (len(results) == 1)
-    return (uniq, (results or [None])[0])  # bool, first result
+    return (uniq, (results or [None])[0])
 
 
 # prepare & check args
