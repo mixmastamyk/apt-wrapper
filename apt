@@ -64,7 +64,7 @@ cmd_map = {
     # more
     'fingerprint': 'apt-key',
     'list': 'dpkg-query -l',
-    'query': 'dpkg-query -l',       # alias
+    'status': 'dpkg-query -l',       # alias
     'listfiles': 'dpkg-query -L',
     'searchfiles': 'dpkg-query -S',
     'instdeb': 'dpkg -i',
