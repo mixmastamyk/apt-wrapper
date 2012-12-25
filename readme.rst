@@ -39,7 +39,7 @@ Usage
     apt rm foo            # alias
     apt instdeb foo.deb
 
-etc. 
+etc.
 ``apt`` can also handle shortened commands.  Add letters to the command until it
 is uniquely identified::
 
