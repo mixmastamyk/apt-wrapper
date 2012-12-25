@@ -1,12 +1,17 @@
 #!/usr/bin/env python
-''' A simpler interface to Debian APT commands. (C) 2012 Mike Miller
+'''
+    A simpler interface to Debian APT commands. (C) 2012 Mike Miller
     License: GPLv3+
+
+    %prog [options] COMMAND ARGS
+    %prog           # with no arguments to list available commands
 '''
 import sys, os
 from subprocess import call
+from optparse import OptionParser
 
+# initialization
 __version__ = '0.93'
-debug = False
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key', 'dpkg -i')
 # map commands to their appropriate binaries:
 cmd_map = {
@@ -77,26 +82,25 @@ def is_uniq(fragment):
     uniq = (len(results) == 1)
     return uniq, (results or [None])[0], results
 
-
 # check & prepare args
-args = sys.argv[1:]
-if not args or ('-h' in args) or ('--help' in args):
+parser = OptionParser(usage=__doc__.rstrip(), version=__version__)
+parser.add_option('-d', '--debug', action='store_true', default=False,
+                  help='turn on debugging output.')
+opts, args = parser.parse_args()
+
+if not args:
     sys.exit('Error: no command given.  Must be one of: \n\n(%s).\n' %
              ', '.join(commands))
 else:
     command = args[0]
 
-# enable debug text
-if '-d' in args:
-    args.remove('-d')
-    debug = True
 
-# find binary
+# find applicable binary, command
 if command in cmd_map:
     binary = cmd_map[command]
 else:
     uniq, command, matches = is_uniq(command)
-    if debug:
+    if opts.debug:
         print 'Unique:', args[0], command
     if not uniq:
         sys.exit('Error: %s command, %s --> %s' % (
@@ -117,7 +121,7 @@ if ' ' in binary:
 
 # build command line
 cmdline = prefix + ' '.join([binary, command] + args[1:])
-if debug:
+if opts.debug:
     print 'Running:', cmdline
 
 # http://youtu.be/0hiUuL5uTKc?t=8s
