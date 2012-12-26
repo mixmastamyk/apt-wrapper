@@ -1,4 +1,7 @@
 #!/bin/bash -v
+# might be nice at some point to upgrade this to:
+# http://stackoverflow.com/a/3090460/450917
+# http://pythonpaste.org/scripttest/
 
 pyflakes *.py apt
 sudo python setup.py install
