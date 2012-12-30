@@ -11,7 +11,7 @@ from subprocess import call
 from optparse import OptionParser
 
 # initialization
-__version__ = '0.93'
+__version__ = '0.94'
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key', 'dpkg -i')
 # map commands to their appropriate binaries:
 cmd_map = {
