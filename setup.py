@@ -25,6 +25,7 @@ setup(
     download_url  = 'https://bitbucket.org/mixmastamyk/apt/get/default.tar.gz',
     license       = 'GPLv3',
     scripts       = ['apt'],
+    data_files    = [ ('', ['readme.rst']) ],
 
     long_description = long_description,
     classifiers     = [
