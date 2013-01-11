@@ -3,16 +3,20 @@ from distutils.core import setup
 
 # grab metadata
 version = '1.00'
-with file('apt') as f:
+with open('apt') as f:
     for line in f:
         if line.startswith('__version__'):
             try:
-                version = line.split()[2].replace("'", '')
+                version = line.split("'")[1]
             except IndexError:
                 pass
             break
-with file('readme.rst') as f:
-    long_description = f.read()
+# readme is needed at register time, not install time
+try:
+    with open('readme.rst') as f:
+        long_description = f.read()
+except IOError:
+    long_description = ''
 
 
 setup(
@@ -25,7 +29,6 @@ setup(
     download_url  = 'https://bitbucket.org/mixmastamyk/apt/get/default.tar.gz',
     license       = 'GPLv3',
     scripts       = ['apt'],
-    data_files    = [ ('', ['readme.rst']) ],
 
     long_description = long_description,
     classifiers     = [
