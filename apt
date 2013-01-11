@@ -11,7 +11,7 @@ from subprocess import call
 from optparse import OptionParser
 
 # initialization
-__version__ = '0.94'
+__version__ = '0.95'
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key', 'dpkg -i')
 # map commands to their appropriate binaries:
 cmd_map = {
@@ -45,6 +45,7 @@ cmd_map = {
     'policy': 'apt-cache',
     'rdepends': 'apt-cache',
     'search': 'apt-cache',
+    'se': 'apt-cache search',       # alias
     'show': 'apt-cache',
     'showauto': 'apt-cache',
     'showpkg': 'apt-cache',
