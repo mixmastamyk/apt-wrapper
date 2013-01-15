@@ -11,7 +11,7 @@ that directs commands to the appropriate tool,
 automatically elevating itself with sudo if need-be.
 It consolidates all commands from ``apt-get`` and ``apt-cache``,
 and the most common from
-``aptitude, dpkg, dpkg-query, add-apt-repository``, and ``apt-key``, etc.
+``aptitude, dpkg, dpkg-query, add-apt-repository``, and ``apt-key``.
 It has a much narrower focus than "kitchen-sink" tools such as ``wajig``.
 
 Hopefully this micro-project will make your life a tiny bit easier.
