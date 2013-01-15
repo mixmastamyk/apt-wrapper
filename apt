@@ -11,8 +11,10 @@ from subprocess import call
 from optparse import OptionParser
 
 # initialization
-__version__ = '0.95'
-use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key', 'dpkg -i')
+__version__ = '0.96'
+use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key', 'dpkg -i',
+            'add-apt-repository ')
+
 # map commands to their appropriate binaries:
 cmd_map = {
     # apt-get
@@ -72,6 +74,7 @@ cmd_map = {
     'listfiles': 'dpkg-query -L',
     'searchfiles': 'dpkg-query -S',
     'instdeb': 'dpkg -i',
+    'addrepo': 'add-apt-repository ',  # trailing space hack to override cmd
 }
 commands = sorted(set(cmd_map.keys()))  # make a list for the user
 
@@ -121,7 +124,7 @@ if ' ' in binary:
 
 
 # build command line
-cmdline = prefix + ' '.join([binary, command] + args[1:])
+cmdline = (prefix + ' '.join([binary, command] + args[1:])).replace('  ', ' ')
 if opts.debug:
     print 'Running:', cmdline
 
