@@ -11,7 +11,7 @@ from subprocess import call
 from optparse import OptionParser
 
 # initialization
-__version__ = '0.96'
+__version__ = '0.97'
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key', 'dpkg -i',
             'add-apt-repository ')
 
@@ -129,4 +129,7 @@ if opts.debug:
     print 'Running:', cmdline
 
 # http://youtu.be/0hiUuL5uTKc?t=8s
-sys.exit(call(cmdline, shell=True))
+try:
+    sys.exit(call(cmdline, shell=True))
+except KeyboardInterrupt:
+    print >> sys.stderr, '\nWarning: Ctrl+C entered, exiting.'
