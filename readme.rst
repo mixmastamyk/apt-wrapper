@@ -34,19 +34,24 @@ Usage
 
 ::
 
-    apt                       # for a list of available commands
-    apt addrepo ppa:who/foo
+    apt                         # list available commands
+    apt addrepo ppa:who/foo     # invokes sudo...
+    Password:
+
+    apt update
     apt search foo
     apt policy foo
     apt install foo bar
-    Password:
 
-    apt rm foo                # an alias to remove
+    apt remove foo
     apt instdeb foo.deb
 
-etc.
-``apt`` can also handle shortened commands.  Add letters to the command until it
-is uniquely identified::
+
+Shortened commands
+~~~~~~~~~~~~~~~~~~~~
+
+``apt`` can also handle shortened commands.
+Add letters until it can be uniquely identified::
 
     apt cl
 
@@ -54,11 +59,24 @@ results in::
 
     sudo apt-get clean
 
+Aliases
+~~~~~~~~~
+
+There are a few aliases for common commands as well::
+
+    apt in foo                  # install
+    apt rm bar                  # remove
+    apt se baz                  # search
+
+|
+
 Problem?
 ``-d`` can help by outputting debugging information such as the full
 command-line::
 
-    apt searchfiles /bin/less -d
+    $ apt searchfiles /bin/less -d
+    Running: dpkg-query -S /bin/less
+    less: /bin/less
 
 |
 
