@@ -14,8 +14,8 @@ and the most common from
 ``aptitude, dpkg, dpkg-query, add-apt-repository``, and ``apt-key``.
 It has a much narrower focus than "kitchen-sink" tools such as ``wajig``.
 
-Hopefully this micro-project will make your life a tiny bit easier.
-
+| Hopefully this micro-project will make your life a tiny bit easier.
+|
 
 Installation
 --------------
@@ -28,6 +28,7 @@ or for a possibly more up-to-date version::
 
     sudo pip install https://bitbucket.org/mixmastamyk/apt/get/default.tar.gz
 
+|
 
 Usage
 --------------
@@ -46,6 +47,7 @@ Usage
     apt remove foo
     apt instdeb foo.deb
 
+|
 
 Shortened commands
 ~~~~~~~~~~~~~~~~~~~~
@@ -59,6 +61,8 @@ results in::
 
     sudo apt-get clean
 
+|
+
 Aliases
 ~~~~~~~~~
 
@@ -66,15 +70,15 @@ There are a few aliases for common commands as well::
 
     apt in foo                  # install
     apt rm bar                  # remove
-    apt se baz                  # search
+    apt se baz                  # apt-cache search
+    apt who-owns                # dpkg-query --searchfiles
 
-|
 
 Problem?
 ``-d`` can help by outputting debugging information such as the full
 command-line::
 
-    $ apt searchfiles /bin/less -d
+    $ apt who-owns /bin/less -d
     Running: dpkg-query -S /bin/less
     less: /bin/less
 
@@ -84,3 +88,12 @@ License
 ~~~~~~~~~
 
 Licensed under the `GPL, version 3+ <http://www.gnu.org/licenses/gpl.html>`_.
+
+|
+
+Release Notes
+~~~~~~~~~~~~~~~
+
+- 1.03 - Update readme with release notes and document new commands.
+- 1.02 - Add ``who-owns`` alias for ``searchfiles``.
+- 1.01 - Add ``in`` alias for ``install``.
