@@ -11,7 +11,7 @@ from subprocess import call
 from optparse import OptionParser
 
 # initialization
-__version__ = '1.01'
+__version__ = '1.03'
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key', 'dpkg -i',
             'add-apt-repository ', 'apt-get install')
 
@@ -71,9 +71,10 @@ cmd_map = {
     # more
     'fingerprint': 'apt-key',
     'list': 'dpkg-query -l',
-    'status': 'dpkg-query -l',       # alias
+    'status': 'dpkg-query -l',      # alias
     'listfiles': 'dpkg-query -L',
     'searchfiles': 'dpkg-query -S',
+    'who-owns': 'dpkg-query -S',    # alias
     'instdeb': 'dpkg -i',
     'addrepo': 'add-apt-repository ',  # trailing space hack to override cmd
 }
