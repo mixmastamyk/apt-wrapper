@@ -94,6 +94,7 @@ Licensed under the `GPL, version 3+ <http://www.gnu.org/licenses/gpl.html>`_.
 Release Notes
 ~~~~~~~~~~~~~~~
 
-- 1.03 - Update readme with release notes and document new commands.
+- 1.04 - Allow additional options to be passed thru unharmed.
+- 1.03 - Update readme with release notes and document new aliases.
 - 1.02 - Add ``who-owns`` alias for ``searchfiles``.
 - 1.01 - Add ``in`` alias for ``install``.
