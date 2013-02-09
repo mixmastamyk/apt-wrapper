@@ -8,10 +8,10 @@
 '''
 import sys, os
 from subprocess import call
-from optparse import OptionParser
+from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
 # initialization
-__version__ = '1.03'
+__version__ = '1.04'
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key', 'dpkg -i',
             'add-apt-repository ', 'apt-get install')
 
@@ -80,6 +80,24 @@ cmd_map = {
 }
 commands = sorted(set(cmd_map.keys()))  # make a list for the user
 
+
+class PassThroughParser(OptionParser):
+    ''' An unknown option pass-through implementation of OptionParser.
+        http://stackoverflow.com/a/9307174/450917
+
+        When unknown options are encountered, bundle with args and try
+        again, until arguments are depleted.
+        sys.exit(status) will still be called if a known argument is passed
+        incorrectly (e.g. missing arguments or bad argument types, etc.)
+    '''
+    def _process_args(self, largs, rargs, values):
+        while rargs:
+            try:
+                OptionParser._process_args(self, largs, rargs, values)
+            except (BadOptionError,AmbiguousOptionError), e:
+                largs.append(e.opt_str)
+
+
 def is_uniq(fragment):
     ''' Check whether a given command fragment uniquely identifies a command.
         Returns:  boolean, first command or None, all matches.
@@ -88,8 +106,9 @@ def is_uniq(fragment):
     uniq = (len(results) == 1)
     return uniq, (results or [None])[0], results
 
+
 # check & prepare args
-parser = OptionParser(usage=__doc__.rstrip(), version=__version__)
+parser = PassThroughParser(usage=__doc__.rstrip(), version=__version__)
 parser.add_option('-d', '--debug', action='store_true', default=False,
                   help='turn on debugging output.')
 opts, args = parser.parse_args()
@@ -114,6 +133,7 @@ else:
                  args[0], matches))
     binary = cmd_map[command]
 
+
 # should this be elevated?
 if binary in use_sudo and os.geteuid() != 0:
     prefix = 'sudo '
@@ -129,6 +149,7 @@ if ' ' in binary:
 cmdline = (prefix + ' '.join([binary, command] + args[1:])).replace('  ', ' ')
 if opts.debug:
     print 'Running:', cmdline
+
 
 # http://youtu.be/0hiUuL5uTKc?t=8s
 try:
