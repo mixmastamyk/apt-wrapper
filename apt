@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-    A simpler interface to Debian APT commands. (C) 2012 Mike Miller
+    A simpler interface to Debian APT commands. (C) 2012-2013 Mike Miller
     License: GPLv3+
 
     %prog [options] COMMAND ARGS
@@ -149,7 +149,7 @@ if ' ' in binary:
 cmdline = (prefix + ' '.join([binary, command] + args[1:])).replace('  ', ' ')
 if opts.debug:
     print 'Running:', cmdline
-
+    print
 
 # http://youtu.be/0hiUuL5uTKc?t=8s
 try:

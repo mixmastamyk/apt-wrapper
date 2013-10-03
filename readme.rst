@@ -71,7 +71,7 @@ There are a few aliases for common commands as well::
     apt in foo                  # install
     apt rm bar                  # remove
     apt se baz                  # apt-cache search
-    apt who-owns                # dpkg-query --searchfiles
+    apt who-owns /foo           # dpkg-query --searchfiles
 
 
 Problem?
@@ -94,7 +94,7 @@ Licensed under the `GPL, version 3+ <http://www.gnu.org/licenses/gpl.html>`_.
 Release Notes
 ~~~~~~~~~~~~~~~
 
-- 1.04 - Allow additional options to be passed thru unharmed.
+- 1.04 - Allow additional options to be passed thru w/o error.
 - 1.03 - Update readme with release notes and document new aliases.
 - 1.02 - Add ``who-owns`` alias for ``searchfiles``.
 - 1.01 - Add ``in`` alias for ``install``.
