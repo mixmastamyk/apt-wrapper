@@ -11,7 +11,7 @@ from subprocess import call
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
 # initialization
-__version__ = '1.04'
+__version__ = '1.05'
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key', 'dpkg -i',
             'add-apt-repository ', 'apt-get install')
 

@@ -33,19 +33,21 @@ or for a possibly more up-to-date version::
 Usage
 --------------
 
-::
+Examples::
 
     apt                         # list available commands
-    apt addrepo ppa:who/foo     # invokes sudo...
+    apt addrepo ppa:who/foo     # invokes sudo automatically.
     Password:
 
     apt update
     apt search foo
     apt policy foo
     apt install foo bar
-
     apt remove foo
     apt instdeb foo.deb
+
+    apt who-owns `which tr`     # dpkg-query --searchfiles
+    coreutils: /usr/bin/tr
 
 |
 
@@ -71,8 +73,6 @@ There are a few aliases for common commands as well::
     apt in foo                  # install
     apt rm bar                  # remove
     apt se baz                  # apt-cache search
-    apt who-owns /foo           # dpkg-query --searchfiles
-
 
 Problem?
 ``-d`` can help by outputting debugging information such as the full
@@ -94,6 +94,7 @@ Licensed under the `GPL, version 3+ <http://www.gnu.org/licenses/gpl.html>`_.
 Release Notes
 ~~~~~~~~~~~~~~~
 
+- 1.05 - Doc improvements.
 - 1.04 - Allow additional options to be passed thru w/o error.
 - 1.03 - Update readme with release notes and document new aliases.
 - 1.02 - Add ``who-owns`` alias for ``searchfiles``.
