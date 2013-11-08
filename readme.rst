@@ -73,6 +73,9 @@ There are a few aliases for common commands as well::
     apt in foo                  # install
     apt rm bar                  # remove
     apt se baz                  # apt-cache search
+    apt ls boo                  # list installed packages, optionally
+                                # with pkg name or name fragment\*
+    apt dir                     # dir (e.g. NT or ls -l) installed
 
 Problem?
 ``-d`` can help by outputting debugging information such as the full

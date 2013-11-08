@@ -11,7 +11,7 @@ from subprocess import call
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
 # initialization
-__version__ = '1.05'
+__version__ = '1.06'
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key', 'dpkg -i',
             'add-apt-repository ', 'apt-get install')
 
@@ -70,12 +70,13 @@ cmd_map = {
 
     # more
     'fingerprint': 'apt-key',
-    'list': 'dpkg-query -l',
-    'status': 'dpkg-query -l',      # alias
-    'listfiles': 'dpkg-query -L',
-    'searchfiles': 'dpkg-query -S',
-    'who-owns': 'dpkg-query -S',    # alias
-    'instdeb': 'dpkg -i',
+    'dir': 'dpkg-query --list',
+    'ls': 'dpkg --get-selections',          # alias
+    'status': 'dpkg --status',
+    'listfiles': 'dpkg-query --listfiles',
+    'searchfiles': 'dpkg-query --search',
+    'who-owns': 'dpkg-query --search',      # alias
+    'instdeb': 'dpkg --install',
     'addrepo': 'add-apt-repository ',  # trailing space hack to override cmd
 }
 commands = sorted(set(cmd_map.keys()))  # make a list for the user
