@@ -11,9 +11,9 @@ from subprocess import call
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 
 # initialization
-__version__ = '1.06'
-use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key', 'dpkg -i',
-            'add-apt-repository ', 'apt-get install')
+__version__ = '1.07'
+use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key',
+            'dpkg --install', 'add-apt-repository ', 'apt-get install')
 
 # map commands to their appropriate binaries:
 cmd_map = {
@@ -136,10 +136,10 @@ else:
 
 
 # should this be elevated?
+prefix = ''
 if binary in use_sudo and os.geteuid() != 0:
     prefix = 'sudo '
-else:
-    prefix = ''
+
 
 # check if binary uses a flag instead of command
 if ' ' in binary:

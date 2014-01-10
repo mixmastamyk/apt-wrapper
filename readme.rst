@@ -97,7 +97,8 @@ Licensed under the `GPL, version 3+ <http://www.gnu.org/licenses/gpl.html>`_.
 Release Notes
 ~~~~~~~~~~~~~~~
 
-- 1.05 - Add ls and dir aliases and doc syntax.
+- 1.07 - Fix auto elevate for instdeb.
+- 1.06 - Add ls and dir aliases and doc syntax.
 - 1.05 - Doc improvements.
 - 1.04 - Allow additional options to be passed thru w/o error.
 - 1.03 - Update readme with release notes and document new aliases.
