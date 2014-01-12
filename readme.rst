@@ -45,6 +45,7 @@ Examples::
     apt install foo bar
     apt remove foo
     apt instdeb foo.deb
+    apt instdeb http://foo...   # new
 
     apt who-owns `which tr`     # dpkg-query --searchfiles
     coreutils: /usr/bin/tr
@@ -97,6 +98,7 @@ Licensed under the `GPL, version 3+ <http://www.gnu.org/licenses/gpl.html>`_.
 Release Notes
 ~~~~~~~~~~~~~~~
 
+- 1.08 - enh: instdeb can now download and install from urls.
 - 1.07 - Fix auto elevate for instdeb.
 - 1.06 - Add ls and dir aliases and doc syntax.
 - 1.05 - Doc improvements.

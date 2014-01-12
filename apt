@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-    A simpler interface to Debian APT commands. (C) 2012-2013 Mike Miller
+    A simpler interface to Debian APT commands. (C) 2012-2014 Mike Miller
     License: GPLv3+
 
     %prog [options] COMMAND ARGS
@@ -9,9 +9,10 @@
 import sys, os
 from subprocess import call
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
+from urlparse import urlparse
 
 # initialization
-__version__ = '1.07'
+__version__ = '1.08'
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key',
             'dpkg --install', 'add-apt-repository ', 'apt-get install')
 
@@ -95,8 +96,46 @@ class PassThroughParser(OptionParser):
         while rargs:
             try:
                 OptionParser._process_args(self, largs, rargs, values)
-            except (BadOptionError,AmbiguousOptionError), e:
+            except (BadOptionError, AmbiguousOptionError), e:
                 largs.append(e.opt_str)
+
+
+def download(url):
+    ''' Download a file to $TEMP and return its path, with progress.
+        http://stackoverflow.com/a/22776/450917
+    '''
+    import urllib2
+    import tempfile
+    from os.path import join
+
+    file_size, downloaded = 0, 0
+    block_sz = 8192
+    try:
+        filename = url.split('/')[-1]
+        tempfile = join(tempfile.gettempdir(), filename)
+        infile = urllib2.urlopen(url)
+        outfile = open(tempfile, 'wb')
+        meta = infile.info()
+        try:
+            file_size = int(meta.getheaders('Content-Length')[0])
+        except IndexError:
+            pass
+        print 'Downloading: "%s"  Bytes: %s' % (filename, file_size)
+        while True:
+            buffer = infile.read(block_sz)
+            if not buffer:
+                break
+            outfile.write(buffer)
+            if file_size:
+                downloaded += len(buffer)
+                print '\r  %10d  [%3.2f%%]' % (downloaded,
+                                               downloaded * 100.0 / file_size),
+        outfile.close()
+        print
+    except Exception, e:
+        print 'Error:', e.__class__.__name__, str(e)
+        tempfile = None
+    return tempfile
 
 
 def is_uniq(fragment):
@@ -134,6 +173,10 @@ else:
                  args[0], matches))
     binary = cmd_map[command]
 
+# download .deb urls
+if command == 'instdeb':
+    if len(args) > 1 and urlparse(args[1]).scheme:
+        args[1] = download(args[1])
 
 # should this be elevated?
 prefix = ''
