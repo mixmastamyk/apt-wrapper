@@ -12,7 +12,7 @@ from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 from urlparse import urlparse
 
 # initialization
-__version__ = '1.08'
+__version__ = '1.09'
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key',
             'dpkg --install', 'add-apt-repository ', 'apt-get install')
 
@@ -147,10 +147,24 @@ def is_uniq(fragment):
     return uniq, (results or [None])[0], results
 
 
+def get_codename():
+    'Read distro codename from the lsb-release file.'
+    codename = None
+    try:
+        with open('/etc/lsb-release') as f:
+            for line in f:
+                if line.startswith('DISTRIB_CODENAME'):
+                    _, _, codename = line.partition('=')
+                    codename = codename.strip()
+    except IOError, e:
+        print e.__class__.__name__, e
+    return codename
+
+
 # check & prepare args
 parser = PassThroughParser(usage=__doc__.rstrip(), version=__version__)
 parser.add_option('-d', '--debug', action='store_true', default=False,
-                  help='turn on debugging output.')
+                  help='print command-line before execution.')
 opts, args = parser.parse_args()
 
 if not args:
@@ -159,38 +173,48 @@ if not args:
 else:
     command = args[0]
 
-
 # find applicable binary, command
 if command in cmd_map:
     binary = cmd_map[command]
 else:
     uniq, command, matches = is_uniq(command)
     if opts.debug:
-        print 'Unique:', args[0], command
+        print 'Unique:', args[0], '-->', command
     if not uniq:
         sys.exit('Error: %s command, %s --> %s' % (
                  ('ambiguous' if matches else 'unknown'),
                  args[0], matches))
     binary = cmd_map[command]
 
+# shift, args[0] no longer needed
+args = args[1:]
+
 # download .deb urls
 if command == 'instdeb':
-    if len(args) > 1 and urlparse(args[1]).scheme:
-        args[1] = download(args[1])
+    if args and urlparse(args[0]).scheme:
+        args[0] = download(args[0])
+
+elif command == 'addrepo':
+    if args:
+        if args[0].startswith('ppa:'):  pass
+        else:
+            codename = get_codename() or sys.exit('Exiting.')
+            args = ['"deb http://archive.ubuntu.com/ubuntu %s %s"' %
+                    (codename, ' '.join(args)) ]
+    else:
+        sys.exit('Error: addrepo requires a ppa or repo name as parameter.')
 
 # should this be elevated?
 prefix = ''
 if binary in use_sudo and os.geteuid() != 0:
     prefix = 'sudo '
 
-
 # check if binary uses a flag instead of command
 if ' ' in binary:
     binary, command = binary.split(' ', 1)
 
-
 # build command line
-cmdline = (prefix + ' '.join([binary, command] + args[1:])).replace('  ', ' ')
+cmdline = (prefix + ' '.join([binary, command] + args)).replace('  ', ' ')
 if opts.debug:
     print 'Running:', cmdline
     print
