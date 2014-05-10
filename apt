@@ -161,66 +161,69 @@ def get_codename():
     return codename
 
 
-# check & prepare args
-parser = PassThroughParser(usage=__doc__.rstrip(), version=__version__)
-parser.add_option('-d', '--debug', action='store_true', default=False,
-                  help='print command-line before execution.')
-opts, args = parser.parse_args()
+def main(argv):
+    # check & prepare args
+    parser = PassThroughParser(usage=__doc__.rstrip(), version=__version__)
+    parser.add_option('-d', '--debug', action='store_true', default=False,
+                      help='print command-line before execution.')
+    opts, args = parser.parse_args(argv[1:])
 
-if not args:
-    sys.exit('Error: no command given.  Must be one of: \n\n(%s).\n' %
-             ', '.join(commands))
-else:
-    command = args[0]
-
-# find applicable binary, command
-if command in cmd_map:
-    binary = cmd_map[command]
-else:
-    uniq, command, matches = is_uniq(command)
-    if opts.debug:
-        print 'Unique:', args[0], '-->', command
-    if not uniq:
-        sys.exit('Error: %s command, %s --> %s' % (
-                 ('ambiguous' if matches else 'unknown'),
-                 args[0], matches))
-    binary = cmd_map[command]
-
-# shift, args[0] no longer needed
-args = args[1:]
-
-# download .deb urls
-if command == 'instdeb':
-    if args and urlparse(args[0]).scheme:
-        args[0] = download(args[0])
-
-elif command == 'addrepo':
-    if args:
-        if args[0].startswith('ppa:'):  pass
-        else:
-            codename = get_codename() or sys.exit('Exiting.')
-            args = ['"deb http://archive.ubuntu.com/ubuntu %s %s"' %
-                    (codename, ' '.join(args)) ]
+    if not args:
+        sys.exit('Error: no command given.  Must be one of: \n\n(%s).\n' %
+                 ', '.join(commands))
     else:
-        sys.exit('Error: addrepo requires a ppa or repo name as parameter.')
+        command = args[0]
 
-# should this be elevated?
-prefix = ''
-if binary in use_sudo and os.geteuid() != 0:
-    prefix = 'sudo '
+    # find applicable binary, command
+    if command in cmd_map:
+        binary = cmd_map[command]
+    else:
+        uniq, command, matches = is_uniq(command)
+        if opts.debug:
+            print 'Unique:', args[0], '-->', command
+        if not uniq:
+            sys.exit('Error: %s command, %s --> %s' % (
+                     ('ambiguous' if matches else 'unknown'),
+                     args[0], matches))
+        binary = cmd_map[command]
 
-# check if binary uses a flag instead of command
-if ' ' in binary:
-    binary, command = binary.split(' ', 1)
+    # shift, args[0] no longer needed
+    args = args[1:]
 
-# build command line
-cmdline = (prefix + ' '.join([binary, command] + args)).replace('  ', ' ')
-if opts.debug:
-    print 'Running:', cmdline
-    print
+    # download .deb urls
+    if command == 'instdeb':
+        if args and urlparse(args[0]).scheme:
+            args[0] = download(args[0])
+
+    elif command == 'addrepo':
+        if args:
+            if args[0].startswith('ppa:'):  pass
+            else:
+                codename = get_codename() or sys.exit('Exiting.')
+                args = ['"deb http://archive.ubuntu.com/ubuntu %s %s"' %
+                        (codename, ' '.join(args)) ]
+        else:
+            sys.exit('Error: addrepo requires ppa or repo name as argument.')
+
+    # should this be elevated?
+    prefix = ''
+    if binary in use_sudo and os.geteuid() != 0:
+        prefix = 'sudo '
+
+    # check if binary uses a flag instead of command
+    if ' ' in binary:
+        binary, command = binary.split(' ', 1)
+
+    # build command line
+    cmdline = (prefix + ' '.join([binary, command] + args)).replace('  ', ' ')
+    if opts.debug:
+        print 'Running:', cmdline
+        print
+
+    return call(cmdline, shell=True)
 
 # http://youtu.be/0hiUuL5uTKc?t=8s
 try:
-    sys.exit(call(cmdline, shell=True))
+    sys.exit(main(sys.argv))
 except KeyboardInterrupt:
     print >> sys.stderr, '\nWarning: Ctrl+C entered, exiting.'
