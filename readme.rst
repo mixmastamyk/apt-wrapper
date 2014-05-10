@@ -2,7 +2,7 @@
 APT, a Command-line Wrapper
 ============================
 
-A shorter, simpler, and slightly-saner interface to the
+A shorter, simpler, and slightly saner interface to the
 `Debian APT <http://en.wikipedia.org/wiki/Advanced_Packaging_Tool>`_
 command-line tools.
 
@@ -35,19 +35,20 @@ Usage
 
 Examples::
 
-    apt                         # list available commands
-    apt addrepo ppa:who/foo     # invokes sudo automatically.
+    apt                             # list available commands
+    apt addrepo universe partner    # invokes sudo automatically.
     Password:
 
+    apt addrepo ppa:who/foo
     apt update
     apt search foo
     apt policy foo
     apt install foo bar
-    apt remove foo
+    apt purge foo
     apt instdeb foo.deb
-    apt instdeb http://foo...   # new
+    apt instdeb http://foo...       # new
 
-    apt who-owns `which tr`     # dpkg-query --searchfiles
+    apt who-owns `which tr`         # dpkg-query --searchfiles
     coreutils: /usr/bin/tr
 
 |
@@ -98,6 +99,7 @@ Licensed under the `GPL, version 3+ <http://www.gnu.org/licenses/gpl.html>`_.
 Release Notes
 ~~~~~~~~~~~~~~~
 
+- 1.09 - enh: addrepo can now enable standard repos, print commands.
 - 1.08 - enh: instdeb can now download and install from urls.
 - 1.07 - Fix auto elevate for instdeb.
 - 1.06 - Add ls and dir aliases and doc syntax.
