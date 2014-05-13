@@ -2,7 +2,7 @@
 APT, a Command-line Wrapper
 ============================
 
-A shorter, simpler, and slightly saner interface to the
+A shorter, simpler, and slightly saner interactive interface to the
 `Debian APT <http://en.wikipedia.org/wiki/Advanced_Packaging_Tool>`_
 command-line tools.
 
@@ -35,20 +35,20 @@ Usage
 
 Examples::
 
-    apt                             # list available commands
-    apt addrepo universe partner    # invokes sudo automatically.
-    Password:
+    apt                         # List available commands.
+    apt add universe            # Invokes sudo automatically,
+    Password:                   # when necessary.
 
-    apt addrepo ppa:who/foo
+    apt add ppa:who/foo
     apt update
     apt search foo
     apt policy foo
     apt install foo bar
     apt purge foo
     apt instdeb foo.deb
-    apt instdeb http://foo...       # new
+    apt instdeb http://foo...   # new
 
-    apt who-owns `which tr`         # dpkg-query --searchfiles
+    apt who `which tr`
     coreutils: /usr/bin/tr
 
 |
@@ -72,20 +72,12 @@ Aliases
 
 There are a few aliases for common commands as well::
 
-    apt in foo                  # install
-    apt rm bar                  # remove
-    apt se baz                  # apt-cache search
-    apt ls boo                  # list installed packages, optionally
-                                # with pkg name or name fragment\*
-    apt dir                     # dir (e.g. NT or ls -l) installed
-
-Problem?
-``-d`` can help by outputting debugging information such as the full
-command-line::
-
-    $ apt who-owns /bin/less -d
-    Running: dpkg-query -S /bin/less
-    less: /bin/less
+    apt in foo          # install foo
+    apt rm bar          # remove
+    apt se baz          # apt-cache search
+    apt ls boo          # list installed packages, optionally
+                        # with pkg name or glob\* argument syntax.
+    apt dir             # dir (e.g. NT or ls -l) installed packages.
 
 |
 
@@ -99,7 +91,8 @@ Licensed under the `GPL, version 3+ <http://www.gnu.org/licenses/gpl.html>`_.
 Release Notes
 ~~~~~~~~~~~~~~~
 
-- 1.09 - enh: addrepo can now enable standard repos, print commands.
+- 1.10 - enh: reorder messages, refactoring.
+- 1.09 - enh: addrepo can now enable standard repos, print commands by default.
 - 1.08 - enh: instdeb can now download and install from urls.
 - 1.07 - Fix auto elevate for instdeb.
 - 1.06 - Add ls and dir aliases and doc syntax.

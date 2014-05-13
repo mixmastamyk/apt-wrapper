@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 '''
-    A simpler interface to Debian APT commands. (C) 2012-2014 Mike Miller
-    License: GPLv3+
+    %prog - A simpler interactive interface to Debian APT commands.
+    (C) 2012-2014 Mike Miller, License: GPLv3+
 
     %prog [options] COMMAND ARGS
     %prog           # with no arguments to list available commands
 '''
-import sys, os
+import sys, os, signal
 from subprocess import call
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 from urlparse import urlparse
 
 # initialization
-__version__ = '1.09'
+__version__ = '1.10'
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key',
             'dpkg --install', 'add-apt-repository ', 'apt-get install')
 
@@ -84,12 +84,12 @@ commands = sorted(set(cmd_map.keys()))  # make a list for the user
 
 
 class PassThroughParser(OptionParser):
-    ''' An unknown option pass-through implementation of OptionParser.
+    ''' An unknown-option pass-through implementation of OptionParser.
         http://stackoverflow.com/a/9307174/450917
 
-        When unknown options are encountered, bundle with args and try
-        again, until arguments are depleted.
-        sys.exit(status) will still be called if a known argument is passed
+        When unknown options are encountered, bundle with argument list and
+        try again, until arguments are depleted.
+        parser.error() will still be called if a known argument is passed
         incorrectly (e.g. missing arguments or bad argument types, etc.)
     '''
     def _process_args(self, largs, rargs, values):
@@ -138,6 +138,21 @@ def download(url):
     return tempfile
 
 
+def get_version():
+    'Read distro/codename from the lsb-release file.'
+    release, codename = None, None
+    try:
+        with open('/etc/lsb-release') as f:
+            for line in f:
+                if line.startswith('DISTRIB_CODENAME'):
+                    _, _, codename = line.rstrip().partition('=')
+                elif line.startswith('DISTRIB_RELEASE'):
+                    _, _, release = line.rstrip().partition('=')
+    except IOError, e:
+        print e.__class__.__name__, e
+    return release, codename
+
+
 def is_uniq(fragment):
     ''' Check whether a given command fragment uniquely identifies a command.
         Returns:  boolean, first command or None, all matches.
@@ -147,63 +162,54 @@ def is_uniq(fragment):
     return uniq, (results or [None])[0], results
 
 
-def get_codename():
-    'Read distro codename from the lsb-release file.'
-    codename = None
-    try:
-        with open('/etc/lsb-release') as f:
-            for line in f:
-                if line.startswith('DISTRIB_CODENAME'):
-                    _, _, codename = line.partition('=')
-                    codename = codename.strip()
-    except IOError, e:
-        print e.__class__.__name__, e
-    return codename
-
-
 def main(argv):
     # check & prepare args
     parser = PassThroughParser(usage=__doc__.rstrip(), version=__version__)
-    parser.add_option('-d', '--debug', action='store_true', default=False,
-                      help='print command-line before execution.')
+    parser.add_option('-d', '--debug', action='store_true', default=True,
+                      help='print command-line before execution, deprecated.')
     opts, args = parser.parse_args(argv[1:])
 
-    if not args:
-        sys.exit('Error: no command given.  Must be one of: \n\n(%s).\n' %
-                 ', '.join(commands))
-    else:
+    if args:
         command = args[0]
+    else:
+        print 'Error: no command given.  Must be one of: \n\n(%s).\n' % (
+              ', '.join(commands))
+        return os.EX_USAGE
 
     # find applicable binary, command
     if command in cmd_map:
         binary = cmd_map[command]
     else:
         uniq, command, matches = is_uniq(command)
-        if opts.debug:
-            print 'Unique:', args[0], '-->', command
         if not uniq:
-            sys.exit('Error: %s command, %s --> %s' % (
-                     ('ambiguous' if matches else 'unknown'),
-                     args[0], matches))
+            print 'Error: %s command, %s --> %s' % (
+                    ('ambiguous' if matches else 'unknown'),
+                     args[0], matches)
+            return os.EX_USAGE
+        if opts.debug:
+            print '* Unique:', args[0], '-->', command
         binary = cmd_map[command]
 
-    # shift, args[0] no longer needed
+    # shift, as arg 0 no longer needed
     args = args[1:]
 
     # download .deb urls
     if command == 'instdeb':
         if args and urlparse(args[0]).scheme:
             args[0] = download(args[0])
-
     elif command == 'addrepo':
         if args:
             if args[0].startswith('ppa:'):  pass
-            else:
-                codename = get_codename() or sys.exit('Exiting.')
-                args = ['"deb http://archive.ubuntu.com/ubuntu %s %s"' %
-                        (codename, ' '.join(args)) ]
+            else:   # 12.10 add-apt-repository can enable std repos by name.
+                release, codename = get_version()
+                if not codename:
+                    print 'Exiting.';  return os.EX_OSFILE
+                if release < '12.10':
+                    args = ['"deb http://archive.ubuntu.com/ubuntu %s %s"' %
+                            (codename, ' '.join(args)) ]
         else:
-            sys.exit('Error: addrepo requires ppa or repo name as argument.')
+            print 'Error: addrepo requires ppa or repo name as argument.'
+            return os.EX_USAGE
 
     # should this be elevated?
     prefix = ''
@@ -217,13 +223,14 @@ def main(argv):
     # build command line
     cmdline = (prefix + ' '.join([binary, command] + args)).replace('  ', ' ')
     if opts.debug:
-        print 'Running:', cmdline
-        print
+        print '* Running:', cmdline
 
     return call(cmdline, shell=True)
+
 
 # http://youtu.be/0hiUuL5uTKc?t=8s
 try:
     sys.exit(main(sys.argv))
 except KeyboardInterrupt:
     print >> sys.stderr, '\nWarning: Ctrl+C entered, exiting.'
+    sys.exit(signal.SIGINT)

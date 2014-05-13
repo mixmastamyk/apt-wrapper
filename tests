@@ -7,21 +7,22 @@ pyflakes *.py apt
 sudo python setup.py install
 
 
-apt search gnome-about -d
+apt search gnome-about
 
-apt policy gnome-about -d
+apt policy gnome-about
 
-apt install foo bar -d
+apt install foo bar
 
-apt rm foo -d
+apt rm foo
 
-apt cl -d
+apt cl
 
-apt status less -d
+apt status less
 
-#~ apt fingerprint -d
+#~ apt fingerprint
 
-apt searchfiles /bin/less -d
+apt searchfiles /bin/less
 
-apt instdeb dude.deb -d
+apt instdeb dude.deb
 
+apt who `which echo`
