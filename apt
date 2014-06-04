@@ -12,9 +12,10 @@ from optparse import OptionParser, BadOptionError, AmbiguousOptionError
 from urlparse import urlparse
 
 # initialization
-__version__ = '1.10'
+__version__ = '1.11'
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key',
-            'dpkg --install', 'add-apt-repository ', 'apt-get install')
+            'add-apt-repository ', 'add-apt-repository --remove',
+            'dpkg --install', 'apt-get install')
 
 # map commands to their appropriate binaries:
 cmd_map = {
@@ -79,6 +80,7 @@ cmd_map = {
     'who-owns': 'dpkg-query --search',      # alias
     'instdeb': 'dpkg --install',
     'addrepo': 'add-apt-repository ',  # trailing space hack to override cmd
+    'rmrepo': 'add-apt-repository --remove',
 }
 commands = sorted(set(cmd_map.keys()))  # make a list for the user
 
