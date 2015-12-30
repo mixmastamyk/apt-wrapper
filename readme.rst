@@ -3,7 +3,7 @@ APT, a Command-line Wrapper
 ============================
 
 A shorter, simpler, and slightly saner interactive interface to the
-`Debian APT <http://en.wikipedia.org/wiki/Advanced_Packaging_Tool>`_
+`Debian/Ubuntu APT <http://en.wikipedia.org/wiki/Advanced_Packaging_Tool>`_
 command-line tools.
 
 ``apt`` may be thought of as a traffic cop
@@ -93,7 +93,7 @@ Release Notes
 ~~~~~~~~~~~~~~~
 
 - 1.12 - enh: Python 3 support, refactoring.
-- 1.11 - enh: rmrepo command to remove ppas.
+- 1.11 - enh: rmrepo command to remove ppa's.
 - 1.10 - enh: reorder messages, refactoring.
 - 1.09 - enh: addrepo can now enable standard repos, print commands by default.
 - 1.08 - enh: instdeb can now download and install from urls.

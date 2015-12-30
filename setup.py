@@ -22,7 +22,7 @@ except IOError:
 setup(
     name          = 'apt-wrapper',
     version       = version,
-    description   = 'A simpler interface to the Debian APT command-line tools.',
+    description   = 'A simpler interface to the Debian/Ubuntu APT command-line tools.',
     author        = 'Mike Miller',
     author_email  = 'mixmastamyk@bitbucket.org',
     url           = 'https://bitbucket.org/mixmastamyk/apt',
