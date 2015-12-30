@@ -6,6 +6,8 @@
     %prog [options] COMMAND ARGS
     %prog           # with no arguments to list available commands
 '''
+from __future__ import print_function
+
 import sys, os, signal
 from subprocess import call
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
