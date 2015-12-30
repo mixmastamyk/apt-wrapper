@@ -11,10 +11,13 @@ from __future__ import print_function
 import sys, os, signal
 from subprocess import call
 from optparse import OptionParser, BadOptionError, AmbiguousOptionError
-from urlparse import urlparse
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib import parse as urlparse
 
 # initialization
-__version__ = '1.11'
+__version__ = '1.12'
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key',
             'add-apt-repository ', 'add-apt-repository --remove',
             'dpkg --install', 'apt-get install')
@@ -124,7 +127,7 @@ def download(url):
             file_size = int(meta.getheaders('Content-Length')[0])
         except IndexError:
             pass
-        print 'Downloading: "%s"  Bytes: %s' % (filename, file_size)
+        print('Downloading: "%s"  Bytes: %s' % (filename, file_size))
         while True:
             buffer = infile.read(block_sz)
             if not buffer:
@@ -132,12 +135,12 @@ def download(url):
             outfile.write(buffer)
             if file_size:
                 downloaded += len(buffer)
-                print '\r  %10d  [%3.2f%%]' % (downloaded,
-                                               downloaded * 100.0 / file_size),
+                print('\r  %10d  [%3.2f%%]' % (downloaded,
+                                               downloaded*100.0 / file_size)),
         outfile.close()
-        print
-    except Exception, e:
-        print 'Error:', e.__class__.__name__, str(e)
+        print()
+    except Exception as err:
+        print('Error:', err.__class__.__name__, str(err))
         tempname = None
     return tempname
 
@@ -152,8 +155,8 @@ def get_version():
                     _, _, codename = line.rstrip().partition('=')
                 elif line.startswith('DISTRIB_RELEASE'):
                     _, _, release = line.rstrip().partition('=')
-    except IOError, e:
-        print e.__class__.__name__, e
+    except IOError as err:
+        print(err.__class__.__name__, err)
     return release, codename
 
 
@@ -170,14 +173,14 @@ def main(argv):
     # check & prepare args
     parser = PassThroughParser(usage=__doc__.rstrip(), version=__version__)
     parser.add_option('-d', '--debug', action='store_true', default=True,
-                      help='print command-line before execution, deprecated.')
+                      help='print(command-line before execution, deprecated.')
     opts, args = parser.parse_args(argv[1:])
 
     if args:
         command = args[0]
     else:
-        print 'Error: no command given.  Must be one of: \n\n(%s).\n' % (
-              ', '.join(commands))
+        print('Error: no command given.  Must be one of: \n\n(%s).\n' % (
+              ', '.join(commands)))
         return os.EX_USAGE
 
     # find applicable binary, command
@@ -186,12 +189,13 @@ def main(argv):
     else:
         uniq, command, matches = is_uniq(command)
         if not uniq:
-            print 'Error: %s command, %s --> %s' % (
-                    ('ambiguous' if matches else 'unknown'),
-                     args[0], matches)
+            print('Error: %s command, %s --> %s' % (
+                        ('ambiguous' if matches else 'unknown'),
+                        args[0], matches)
+            )
             return os.EX_USAGE
         if opts.debug:
-            print '* Unique:', args[0], '-->', command
+            print('* Unique:', args[0], '-->', command)
         binary = cmd_map[command]
 
     # shift, as arg 0 no longer needed
@@ -210,12 +214,12 @@ def main(argv):
             else:   # 12.10 add-apt-repository can enable std repos by name.
                 release, codename = get_version()
                 if not codename:
-                    print 'Exiting.';  return os.EX_OSFILE
+                    print('Exiting.');  return os.EX_OSFILE
                 if release < '12.10':
                     args = ['"deb http://archive.ubuntu.com/ubuntu %s %s"' %
                             (codename, ' '.join(args)) ]
         else:
-            print 'Error: addrepo requires ppa or repo name as argument.'
+            print('Error: addrepo requires ppa or repo name as argument.')
             return os.EX_USAGE
 
     # should this be elevated?
@@ -230,7 +234,7 @@ def main(argv):
     # build command line
     cmdline = (prefix + ' '.join([binary, command] + args)).replace('  ', ' ')
     if opts.debug:
-        print '* Running:', cmdline
+        print('* Running:', cmdline)
 
     return call(cmdline, shell=True)
 
@@ -239,5 +243,5 @@ def main(argv):
 try:
     sys.exit(main(sys.argv))
 except KeyboardInterrupt:
-    print >> sys.stderr, '\nWarning: Ctrl+C entered, exiting.'
+    print('\nWarning: Ctrl+C entered, exiting.', file=sys.stderr)
     sys.exit(signal.SIGINT)
