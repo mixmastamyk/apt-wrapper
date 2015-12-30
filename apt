@@ -198,7 +198,10 @@ def main(argv):
     # download .deb urls
     if command == 'instdeb':
         if args and urlparse(args[0]).scheme:
-            args[0] = download(args[0])
+            path = download(args[0])
+            if not path:
+                return os.EX_UNAVAILABLE
+            args[0] = path
     elif command == 'addrepo':
         if args:
             if args[0].startswith('ppa:'):  pass
