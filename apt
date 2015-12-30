@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''
     %prog - A simpler interactive interface to Debian APT commands.
-    (C) 2012-2014 Mike Miller, License: GPLv3+
+    (C) 2012-2015 Mike Miller, License: GPLv3+
 
     %prog [options] COMMAND ARGS
     %prog           # with no arguments to list available commands
