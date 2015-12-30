@@ -98,8 +98,8 @@ class PassThroughParser(OptionParser):
         while rargs:
             try:
                 OptionParser._process_args(self, largs, rargs, values)
-            except (BadOptionError, AmbiguousOptionError), e:
-                largs.append(e.opt_str)
+            except (BadOptionError, AmbiguousOptionError) as err:
+                largs.append(err.opt_str)
 
 
 def download(url):
