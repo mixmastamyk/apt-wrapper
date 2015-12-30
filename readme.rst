@@ -14,7 +14,8 @@ and the most common from
 ``aptitude, dpkg, dpkg-query, add-apt-repository``, and ``apt-key``.
 It has a much narrower focus than "kitchen-sink" tools such as ``wajig``.
 
-| Hopefully this micro-project will make your life a tiny bit easier.
+Hopefully this micro-project will make your life a tiny bit easier.
+
 |
 
 Installation
@@ -48,7 +49,7 @@ Examples::
     apt instdeb foo.deb
     apt instdeb http://foo...   # new
 
-    apt who `which tr`
+    apt who-owns `which tr`
     coreutils: /usr/bin/tr
 
 |
@@ -91,6 +92,7 @@ Licensed under the `GPL, version 3+ <http://www.gnu.org/licenses/gpl.html>`_.
 Release Notes
 ~~~~~~~~~~~~~~~
 
+- 1.12 - enh: Python 3 support, refactoring.
 - 1.11 - enh: rmrepo command to remove ppas.
 - 1.10 - enh: reorder messages, refactoring.
 - 1.09 - enh: addrepo can now enable standard repos, print commands by default.
