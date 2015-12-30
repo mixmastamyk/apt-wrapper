@@ -173,7 +173,7 @@ def main(argv):
     # check & prepare args
     parser = PassThroughParser(usage=__doc__.rstrip(), version=__version__)
     parser.add_option('-d', '--debug', action='store_true', default=True,
-                      help='print(command-line before execution, deprecated.')
+                      help='print command-line before execution, deprecated.')
     opts, args = parser.parse_args(argv[1:])
 
     if args:
