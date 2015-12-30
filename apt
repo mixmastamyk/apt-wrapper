@@ -114,9 +114,9 @@ def download(url):
     block_sz = 8192
     try:
         filename = url.split('/')[-1]
-        tempfile = join(tempfile.gettempdir(), filename)
+        tempname = join(tempfile.gettempdir(), filename)
         infile = urllib2.urlopen(url)
-        outfile = open(tempfile, 'wb')
+        outfile = open(tempname, 'wb')
         meta = infile.info()
         try:
             file_size = int(meta.getheaders('Content-Length')[0])
@@ -136,8 +136,8 @@ def download(url):
         print
     except Exception, e:
         print 'Error:', e.__class__.__name__, str(e)
-        tempfile = None
-    return tempfile
+        tempname = None
+    return tempname
 
 
 def get_version():
