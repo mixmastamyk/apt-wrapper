@@ -92,6 +92,7 @@ Licensed under the `GPL, version 3+ <http://www.gnu.org/licenses/gpl.html>`_.
 Release Notes
 ~~~~~~~~~~~~~~~
 
+- 1.13 - fix: instdeb exception under Python 3.
 - 1.12 - enh: Python 3 support, refactoring.
 - 1.11 - enh: rmrepo command to remove ppa's.
 - 1.10 - enh: reorder messages, refactoring.
