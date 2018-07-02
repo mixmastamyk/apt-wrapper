@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''
     %prog - A simpler interactive interface to Debian APT commands.
-    (C) 2012-2015 Mike Miller, License: GPLv3+
+    (C) 2012-2018 Mike Miller, License: GPLv3+
 
     %prog [options] COMMAND ARGS
     %prog           # with no arguments to list available commands
@@ -17,7 +17,7 @@ except ImportError:
     from urllib.parse import urlparse
 
 # initialization
-__version__ = '1.13'
+__version__ = '1.14'
 use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key',
             'add-apt-repository ', 'add-apt-repository --remove',
             'dpkg --install', 'apt-get install')
@@ -111,16 +111,19 @@ def download(url):
     ''' Download a file to $TEMP and return its path, with progress.
         http://stackoverflow.com/a/22776/450917
     '''
-    import urllib2
     import tempfile
     from os.path import join
+    try:
+        from urllib2 import urlopen
+    except ImportError:
+        from urllib.request import urlopen
 
     file_size, downloaded = 0, 0
     block_sz = 8192
     try:
         filename = url.split('/')[-1]
         tempname = join(tempfile.gettempdir(), filename)
-        infile = urllib2.urlopen(url)
+        infile = urlopen(url)
         outfile = open(tempname, 'wb')
         meta = infile.info()
         try:
