@@ -6,6 +6,11 @@ A shorter, simpler, and slightly saner interactive interface to the
 `Debian/Ubuntu APT <http://en.wikipedia.org/wiki/Advanced_Packaging_Tool>`_
 command-line tools.
 
+**Note:** This utility is not as useful as it once was because the apt command
+has already incorported its headline features.
+However, it is still more convenient in a number of ways,
+so read on if you'd like.
+
 ``apt`` may be thought of as a traffic cop
 that directs commands to the appropriate tool,
 automatically elevating itself with sudo if need-be.
@@ -92,6 +97,7 @@ Licensed under the `GPL, version 3+ <http://www.gnu.org/licenses/gpl.html>`_.
 Release Notes
 ~~~~~~~~~~~~~~~
 
+- 1.18 - Forced off bitbucket, move to github.  Update metadata.
 - 1.15 - fix: instdeb download issue under Python3.
 - 1.12 - enh: Python 3 support, refactoring.
 - 1.11 - enh: rmrepo command to remove ppa's.
