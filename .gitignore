@@ -3,3 +3,4 @@ MANIFEST
 build/*
 dist/*
 readme.html
+*.egg-info

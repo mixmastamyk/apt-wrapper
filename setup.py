@@ -25,7 +25,7 @@ setup(
     description   = 'A simpler interface to the Debian/Ubuntu APT command-line tools.',
     author        = 'Mike Miller',
     author_email  = 'mixmastamyk@bitbucket.org',
-    url           = 'https://github.com/mixmastamyk/apt',
+    url           = 'https://github.com/mixmastamyk/apt-wrapper',
     #~ download_url  = 'https://github.com/mixmastamyk/apt/get/default.tar.gz',
     license       = 'GPLv3',
     scripts       = ['apt'],
