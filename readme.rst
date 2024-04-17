@@ -2,6 +2,12 @@
 APT, a Command-line Wrapper
 ============================
 
+Note:
+
+    This still works but is deprecated in favor of the spam project,
+    by the same developer.
+
+
 A shorter, simpler, and slightly saner interactive interface to the
 `Debian/Ubuntu APT <http://en.wikipedia.org/wiki/Advanced_Packaging_Tool>`_
 command-line tools.
@@ -97,6 +103,7 @@ Licensed under the `GPL, version 3+ <http://www.gnu.org/licenses/gpl.html>`_.
 Release Notes
 ~~~~~~~~~~~~~~~
 
+- 1.19 - Update readme.
 - 1.18 - Forced off bitbucket, move to github.  Update metadata.
 - 1.15 - fix: instdeb download issue under Python3.
 - 1.12 - enh: Python 3 support, refactoring.

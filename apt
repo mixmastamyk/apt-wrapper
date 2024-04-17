@@ -17,10 +17,11 @@ except ImportError:
     from urllib.parse import urlparse
 
 # initialization
-__version__ = '1.18'
-use_sudo = ('apt-get', 'apt-get remove', 'aptitude', 'apt-key',
-            'add-apt-repository ', 'add-apt-repository --remove',
-            'dpkg --install', 'apt-get install')
+__version__ = '1.19'
+use_sudo = (
+    'apt-get', 'apt-get remove', 'aptitude', 'apt-key', 'add-apt-repository ',
+    'add-apt-repository --remove', 'dpkg --install', 'apt-get install'
+)
 
 # map commands to their appropriate binaries:
 cmd_map = {
